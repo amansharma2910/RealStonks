@@ -1,15 +1,16 @@
-import bs4
 import requests
+from bs4 import BeautifulSoup
 
 class Scrapy:
-    
-    #TODO: Implement method to get the stock page HTML
-    def getPage(self, stock: str):
-        pass
-
+    def __init__(self, stock: str):
+        self.stock = stock.strip().lower()
+        self.url = 'https://www.nasdaq.com/market-activity/stocks/'+self.stock
+        
+    def getPage(self):
+        self.page = requests.get(self.url)
+        return self.page
+     
     #TODO: Implement method to get the current price
-    @staticmethod
     def getPrice(self, stock: str):
         pass
 
-    
