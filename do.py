@@ -1,4 +1,24 @@
-import flask
-import flask_restful
+from flask import Flask
+from flask_restful import Api, Resource, reqparse
+
+from scrapy import Scrapy
 
 #TODO: Implement the API methods
+app = Flask(__name__)
+api = Api(app=app)
+
+class Stock(Resource):
+    def get(self, name: str):
+        if name:
+            try:
+                stock = Scrapy(stock=name)
+                return stock.getPrice(), 200
+            except:
+                return "Invalid Stock Ticker", 404
+        return "Bad Request: Provide Stock Ticker", 400
+
+api.add_resource(Stock, "/<string:name>")
+
+
+if __name__ == '__main__':
+    app.run(debug=True)
