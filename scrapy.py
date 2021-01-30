@@ -1,3 +1,5 @@
+import re
+import json
 import requests
 from bs4 import BeautifulSoup
 
@@ -10,19 +12,18 @@ class Scrapy:
         self.page = requests.get(self.url)
         return self.page
      
-    #TODO: Implement method to get the current price
     def getPrice(self):
         page = self.getPage()
         soup = BeautifulSoup(page._content, 'html.parser')
         result = {}
-        result['price'] = soup.find("bg-quote", class_="value").text
-        result['change'] = soup.find("bg-quote", field_="change").text
-        # result['price'] = soup.find("bg-quote", class_="value").text
-        # result['price'] = soup.find("bg-quote", class_="value").text
+        result['price'] = float("".join(soup.find("h3", {"class": "intraday__price"}).find(class_="value").text.split(",")))
+        result['change_point'] = float("".join(soup.find("span", {"class": "change--point--q"}).text.split(",")))
+        result['change_percentage'] = float(soup.find("span", {"class": "change--percent--q"}).text[:-1])
+        result['total_vol'] = re.search(r"\d+[.]*\d*[a-zA-Z]*", soup.find("div", {"class": "range__header"}).find("span", {"class": "primary"}).text).group()
 
-        return result['change']
+        return json.dumps(result, indent=4)
 
 
 if __name__ == "__main__":
-    aapl = Scrapy('AAPL')
-    print(aapl.getPrice())
+    tsla = Scrapy('TSLA')
+    print(tsla.getPrice())
