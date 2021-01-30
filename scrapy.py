@@ -1,5 +1,4 @@
 import re
-import json
 import requests
 from bs4 import BeautifulSoup
 
@@ -21,7 +20,7 @@ class Scrapy:
         result['change_percentage'] = float(soup.find("span", {"class": "change--percent--q"}).text[:-1])
         result['total_vol'] = re.search(r"\d+[.]*\d*[a-zA-Z]*", soup.find("div", {"class": "range__header"}).find("span", {"class": "primary"}).text).group()
 
-        return json.dumps(result)
+        return result
 
 
 if __name__ == "__main__":
