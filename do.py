@@ -13,7 +13,7 @@ class Stock(Resource):
         if name:
             try:
                 stock = Scrapy(stock=name)
-                return json.dumps(stock.getPrice()), 200
+                return stock.getPrice(), 200
             except:
                 return "Invalid Stock Ticker", 404
         return "Bad Request: Provide Stock Ticker", 400
