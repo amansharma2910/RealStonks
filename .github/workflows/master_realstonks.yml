@@ -21,13 +21,13 @@ jobs:
     - name: Set up Python version
       uses: actions/setup-python@v1
       with:
-        python-version: '3.8'
+        python-version: '3.10'
 
     - name: Build using AppService-Build
       uses: azure/appservice-build@v2
       with:
         platform: python
-        platform-version: '3.8'
+        platform-version: '3.10'
 
     - name: Run Azure webapp deploy action using publish profile credentials
       uses: azure/webapps-deploy@v2
