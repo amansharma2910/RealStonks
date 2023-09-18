@@ -3,6 +3,8 @@ import json
 import cloudscraper
 from bs4 import BeautifulSoup
 
+from app.utils import bulk_convert_percent_string_to_float
+
 
 class UrlNotFoundException(Exception):
     pass
@@ -44,6 +46,8 @@ class Scraper:
 
             stock_metrics = ast.literal_eval(data_column.find("div", class_="bc-quote-overview")["data-ng-init"].lstrip("init(").rstrip(")"))[3].get("raw")        
             stock_info.update(stock_metrics)
+
+            stock_info = bulk_convert_percent_string_to_float(stock_info, ["percentChange", "percentChangeExt"])
         except:
             raise PageFormatChangedException(f"Kindly check the page format for {symbol}")
 
