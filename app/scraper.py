@@ -2,19 +2,12 @@ import ast
 import json
 import cloudscraper
 from bs4 import BeautifulSoup
+from app.exceptions import PageFormatChangedException, UrlNotFoundException
 
 from app.utils import bulk_convert_percent_string_to_float
 
 
-class UrlNotFoundException(Exception):
-    pass
-
-
-class PageFormatChangedException(Exception):
-    pass
-
-
-class Scraper:
+class ScraperV2:
     url = "https://www.barchart.com/stocks/quotes/{symbol}/overview"
     scraper = cloudscraper.create_scraper(delay=5)
 

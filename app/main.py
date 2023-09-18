@@ -1,8 +1,9 @@
-from fastapi import FastAPI, Request
-from fastapi import Response
+from fastapi import FastAPI, Request, Response
 
 from app.models import StockInfo
-from app.scraper import PageFormatChangedException, Scraper, UrlNotFoundException
+from app.scraper import ScraperV2
+from app.exceptions import PageFormatChangedException, UrlNotFoundException
+
 
 app = FastAPI()
 
@@ -15,7 +16,7 @@ def server_check(request: Request):
 @app.get("/stocks/{symbol}", response_model=StockInfo)
 def get_stock_info(symbol: str, request: Request):
     try:
-        res = Scraper.get_stock_info(symbol)
+        res = ScraperV2.get_stock_info(symbol)
         return StockInfo(**res)
     except UrlNotFoundException:
         return Response(content=f"Invalid stock symbol. Kindly ensure the ticker symbol is a valid NASDAQ-listed stock.", status_code=404)
